@@ -1,0 +1,5 @@
+# データ保存場所
+app/data/
+
+# cacheデータ
+app/src/__pycache__
