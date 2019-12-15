@@ -7,6 +7,7 @@ def unpickle(path):
         dict_data = pickle.load(f, encoding="bytes")
     return dict_data 
 
+savepath = "../plot_image/data_bar.jpg"
 DATAROOT = "../DETASET/cifar-10-batches-py"
 train_labels = np.ndarray([])
 test_labels = np.ndarray([])
@@ -43,4 +44,4 @@ plt.tick_params(labelsize=7)
 plt.ylim(ymax=5000, ymin=0)
 plt.bar(label_name, test_amont)
 
-plt.show()
+plt.savefig(savepath)
