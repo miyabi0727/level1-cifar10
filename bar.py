@@ -24,7 +24,7 @@ DATAROOT = "app/dagitta"
 train = count(DATAROOT + "/train")
 test = count(DATAROOT + "/test")
 
-name = train.keys()p
+name = train.keys()
 train_amount = [train[s] for s in name]
 test_amount = [test[s] for s in name]
 
