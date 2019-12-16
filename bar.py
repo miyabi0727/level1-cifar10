@@ -1,47 +1,43 @@
 import matplotlib.pyplot as plt
 import pickle
 import numpy as np
+import os.path
+import glob
 
 def unpickle(path):
     with open(path, "rb") as f:
         dict_data = pickle.load(f, encoding="bytes")
     return dict_data 
 
-savepath = "../plot_image/data_bar.jpg"
-DATAROOT = "../DETASET/cifar-10-batches-py"
-train_labels = np.ndarray([])
-test_labels = np.ndarray([])
-#trainイメージラベル取得
-for i in range(1,6):
-    train_dict = unpickle(DATAROOT + "/data_batch_" + str(i))
-    train_labels = np.insert(train_labels, train_labels.size, train_dict[b"labels"]).astype("int")
+def count(path):
+    data = {}
+    paths = glob.glob(path + "/*")
+    for folder in paths:
+        class_name = os.path.basename(folder)
+        amount = len(glob.glob(folder + "/*.png"))
+        data.update({class_name: amount})
+    return data
 
-#testイメージラベル取得
-test_dict = unpickle(DATAROOT + "/test_batch")[b"labels"]
-test_labels = np.insert(test_labels, test_labels.size, test_dict).astype("int")
+savepath = "plot_image/data_bar.png"
+DATAROOT = "app/dagitta"
 
-#classごとのカウント
-train_amont = np.bincount(train_labels)
-test_amont = np.bincount(test_labels)
+train = count(DATAROOT + "/train")
+test = count(DATAROOT + "/test")
 
-#ラベル名取得
-meta = unpickle(DATAROOT + "/batches.meta")[b"label_names"]
-label_name = [s.decode("utf8") for s in meta]
+name = train.keys()p
+train_amount = [train[s] for s in name]
+test_amount = [test[s] for s in name]
 
 #プロット
-plt.subplot(1,2,1)
-plt.title("train", fontsize=15)
+w=0.4
+x=np.arange(len(name))
+plt.title("amount", fontsize=15)
 plt.xlabel("class")
 plt.ylabel("images")
-plt.tick_params(labelsize=7)
-plt.bar(label_name, train_amont)
-
-plt.subplot(1,2,2)
-plt.title("test", fontsize=15)
-plt.xlabel("class")
-plt.ylabel("images")
-plt.tick_params(labelsize=7)
-plt.ylim(ymax=5000, ymin=0)
-plt.bar(label_name, test_amont)
-
+plt.tick_params(labelsize=6)
+plt.bar(x, train_amount, color="b", width=0.4, label="train")
+plt.bar(x + w, test_amount, color="r", width=0.4, label="test")
+plt.xticks(x + w/2, name)
+plt.legend(bbox_to_anchor=(1, 1), loc="upper left")
+plt.subplots_adjust(right=0.8)
 plt.savefig(savepath)
