@@ -18,8 +18,8 @@ def count(path):
         data.update({class_name: amount})
     return data
 
-savepath = "plot_image/data_bar.png"
-DATAROOT = "app/dagitta"
+savepath = "plot_image/data_bar.jpg"
+DATAROOT = "app/data"
 
 train = count(DATAROOT + "/train")
 test = count(DATAROOT + "/test")
@@ -40,4 +40,5 @@ plt.bar(x + w, test_amount, color="r", width=0.4, label="test")
 plt.xticks(x + w/2, name)
 plt.legend(bbox_to_anchor=(1, 1), loc="upper left")
 plt.subplots_adjust(right=0.8)
+
 plt.savefig(savepath)
